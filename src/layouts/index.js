@@ -2,6 +2,7 @@ import {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {Layout, Tabs, Icon} from 'antd';
 import Menu from  '../pages/menu/menu';
+import Help from  '../pages/components/help';
 import Option1 from  '../pages/components/option1';
 import Option2 from  '../pages/components/option2';
 import Option3 from  '../pages/components/option3';
@@ -9,6 +10,12 @@ var createHistory = require('history').createBrowserHistory
 const history = createHistory() 
 const {Header, Sider, Content} = Layout;
 const TabPane = Tabs.TabPane
+const routerData = [
+    {url:"/components/option1", content: Option1},
+    {url:"/components/option2", content: Option2},
+    {url:"/components/option3", content: Option3},
+    {url:"/components/help", content: Help}
+]
 class BasicLayout extends Component {
   constructor(props) {
     super(props);
@@ -41,6 +48,21 @@ class BasicLayout extends Component {
   onEdit = (targetKey, action) => {
     this[action](targetKey)
   }
+  remove = (targetKey) => {
+    //debugger
+    let activeKey = this.state.activeKey
+    let lastIndex
+    this.state.panes.forEach((pane, i) => {
+      if (pane.id == targetKey) {
+        lastIndex = i - 1
+      }
+    })
+    const panes = this.state.panes.filter(pane => pane.id != targetKey);
+    if (lastIndex >= 0 && activeKey === targetKey) {
+      activeKey = panes[lastIndex].id
+    }
+    this.setState({ panes, activeKey })
+  }
   onChange = (activeKey) => {
     const panes = this.state.panes
     let router
@@ -50,9 +72,9 @@ class BasicLayout extends Component {
         return false
       }
     })
-    history.push(router)  
+    history.push(router)
     let selectedKey=activeKey
-    this.setState({selectedKey ,activeKey})
+    this.setState({selectedKey ,activeKey});
   }
   render() {
     return (
@@ -72,12 +94,12 @@ class BasicLayout extends Component {
                     hideAdd={this.state.hideAdd}
                 >
                   {
-                    this.state.panes && this.state.panes.map(pane => {
-                    ///let Component = pane.content<Component />
-                    let Component = this.props.children;
-                    return <TabPane tab={pane.name} key={pane.id}  closable={pane.closable}>
+                    this.state.panes && this.state.panes.map((pane, index) => {
+                    let Component = routerData[index].content;
+                      return <TabPane tab={pane.name} key={pane.id}  closable={pane.closable}>
                             <Component />
-                           </TabPane>})
+                        </TabPane>
+                    })
                   }
                 </Tabs>
             </div>

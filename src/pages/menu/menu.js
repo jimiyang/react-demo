@@ -20,43 +20,15 @@ class MenuApp extends Component {
                     id: '1',
                     name: '商户管理',
                     children: [
-                        {
-                            id: '10',
-                            name: '商户总部',
-                            url:"/components/option1",
-                        },
-                        {
-                            id: '11',
-                            name: '商户门店',
-                            url:"/components/option2",
-                        }
+                        {id: '10', name: '商户总部'},
+                        {id: '11', name: '商户门店'}
                     ]
                 },
                 {
                     id: '2',
                     name: '代理商管理',
                     children: [
-                        {
-                            id: '20',
-                            name: '代理商管理',
-                            url:"/components/option3",
-                        },
-                        {
-                            id: '21',
-                            name: '代理商审核',
-                            url:"/components/option1",
-                        }
-                    ]
-                },
-                {
-                    id: '3',
-                    name: '数据报表',
-                    children: [
-                        {
-                            id: '22',
-                            name: '到账查询',
-                            url:"/components/option1",
-                        }
+                        {id: '20', name: '代理商管理'}
                     ]
                 },
                 {
@@ -84,7 +56,7 @@ class MenuApp extends Component {
                 {
                     this.state.menuPanes.map((item, index) => (
                         (item.children.length === 0) ?
-                        <Menu.Item key={item.id}>
+                        <Menu.Item key={item.id} onClick={() => this.handleClick(item)}>
                             <Icon type="mail" />
                             <span>{item.name}</span>
                         </Menu.Item>
@@ -92,8 +64,8 @@ class MenuApp extends Component {
                         <SubMenu key={index} title={<span><Icon type="mail" /><span>{item.name}</span></span>}>
                             {
                                 item.children.map((children) => (
-                                    <Menu.Item  key={children.id}>
-                                        <Link to={children.url}  onClick={() => this.handleClick(children)}>{children.name}</Link>
+                                    <Menu.Item  key={children.id} onClick={() => this.handleClick(children)}>
+                                        {children.name}
                                     </Menu.Item>
                                 ))
                             }
