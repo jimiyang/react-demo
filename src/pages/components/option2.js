@@ -1,23 +1,20 @@
-import React, {Component} from 'react';
-import {Input} from 'antd';
-class Option2 extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            value: '我是第二个options2'
-        }
-    }
-    change = (e) => {
-        this.setState({
-            value: e.target.value
-        });
-    }
+import React, {Component} from 'react'
+import {Button} from 'antd'
+class Counter extends Component {
     render() {
-        return(
-            <div>
-                <Input value={this.state.value} onChange={this.change} />
-            </div>
+        //从组件的props属性中导入四个方法和一个变量
+        const {increment, decrement, count} = this.props;
+        //渲染组件，包括一个数字，四个按钮
+        return (
+            <p>
+                Clicked: {count} times
+                {' '}
+                <Button type="primary" onClick={increment}>+</Button>
+                {' '}
+                <Button type="primary" onClick={decrement}>-</Button>
+                {' '}
+            </p>
         )
     }
-};
-export default Option2;
+}
+export default Counter

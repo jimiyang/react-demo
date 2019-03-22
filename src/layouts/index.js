@@ -1,6 +1,5 @@
 import {Component} from 'react';
-import {Link} from 'react-router-dom';
-import {Layout, Tabs, Icon} from 'antd';
+import {Layout, Tabs} from 'antd';
 import Menu from  '../pages/menu/menu';
 import Help from  '../pages/components/help';
 import Option1 from  '../pages/components/option1';
@@ -23,7 +22,7 @@ class BasicLayout extends Component {
     const panes = []
     const selectedKey=""
     this.state = {
-      activeKey: panes.length==0 ? '1':panes[0].id,
+      activeKey: panes.length === 0 ? '1':panes[0].id,
       panes,
       selectedKey,
       hideAdd: true
@@ -35,7 +34,7 @@ class BasicLayout extends Component {
     let flag=true
     //debugger
     panes.length > 0 && panes.map((item,i)=>{
-        if(item.id == activeKey){
+        if(item.id === activeKey){
             flag = false
         } 
     })
@@ -53,15 +52,15 @@ class BasicLayout extends Component {
     let activeKey = this.state.activeKey
     let lastIndex
     this.state.panes.forEach((pane, i) => {
-      if (pane.id == targetKey) {
+      if (pane.id === targetKey) {
         lastIndex = i - 1
       }
     })
-    const panes = this.state.panes.filter(pane => pane.id != targetKey);
+    const panes = this.state.panes.filter(pane => pane.id !== targetKey);
     if (lastIndex >= 0 && activeKey === targetKey) {
       activeKey = panes[lastIndex].id
     }
-    this.setState({ panes, activeKey })
+    this.setState({panes, activeKey})
   }
   onChange = (activeKey) => {
     const panes = this.state.panes
@@ -79,13 +78,13 @@ class BasicLayout extends Component {
   render() {
     return (
       <Layout>
-        <Sider width={220} style={{ minHeight: '100vh', color: 'white' }}>
+        <Sider width={220} style={{minHeight: '100vh', color: 'white'}}>
             <Menu handleClick = {this.handleClick}/>
         </Sider>
         <Layout>
-          <Header style={{ background: '#fff', textAlign: 'center', padding: 0 }}>Header</Header>
-          <Content style={{ margin: '24px 16px 0' }}>
-            <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+          <Header style={{background: '#fff', textAlign: 'center', padding: 0}}>Header</Header>
+          <Content style={{margin: '24px 16px 0'}}>
+            <div style={{padding: 24, background: '#fff', minHeight: 360}}>
                 <Tabs
                     onChange={this.onChange.bind(this)}
                     activeKey={this.state.activeKey}

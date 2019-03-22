@@ -1,9 +1,6 @@
 import React, {Component} from 'react';
-import {BrowserRouter as Router, Route, Link, withRouter} from 'react-router-dom';
 import {Menu, Icon} from 'antd';
 const SubMenu = Menu.SubMenu;
-var createHistory = require('history').createBrowserHistory
-const history = createHistory();
 class MenuApp extends Component {
     constructor(props) {
         super(props);
@@ -12,7 +9,7 @@ class MenuApp extends Component {
         const selectedKey = ""
         this.state = {
             collapsed: false,
-            activeKey: panes.length==0 ? '1':panes[0].key,
+            activeKey: panes.length === 0 ? '1':panes[0].key,
             panes,
             selectedKey,
             menuPanes: [
