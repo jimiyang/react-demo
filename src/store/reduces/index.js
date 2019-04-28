@@ -2,9 +2,11 @@ import { combineReducers } from 'redux';
 import {EDIT_TODO, ADD_TODO} from  '../actionType.js';
 //type是这个指令的唯一标识
 const initialState = {
-    count: 0
+    count: 0,
+    arr: []
 }
 // Reducer
+// 获取组件提交(action)过来的值
 function todos(state = initialState, action) {
     switch(action.type) {
         case EDIT_TODO:
@@ -13,7 +15,10 @@ function todos(state = initialState, action) {
             count: state.count + 1
           }
         case ADD_TODO:
-          return state - 1
+          return {
+            ...state,
+            arr: action.arr
+          }
         default:
           return state;
     }

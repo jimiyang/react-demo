@@ -11,7 +11,6 @@ const {Header, Sider, Content} = Layout;
 const TabPane = Tabs.TabPane
 const routerData = [
     {url:"/components/option1", content: Option1},
-    {url:"/components/option2", content: Option2},
     {url:"/components/option3", content: Option3},
     {url:"/components/help", content: Help}
 ]
@@ -27,6 +26,24 @@ class BasicLayout extends Component {
       selectedKey,
       hideAdd: true
     }
+  }
+  getComponent(url) {
+    let Component;
+    switch(url) {
+      case '/components/option1':
+        Component = Option1
+      break;
+      case '/components/option2':
+        Component = Option2
+      break;
+      case '/components/option3':
+        Component = Option3
+      break;
+      case '/components/help':
+        Component = Help
+      break;
+    }
+    return <Component />;
   }
   handleClick = (pane) => {
     let panes = this.state.panes
@@ -94,9 +111,9 @@ class BasicLayout extends Component {
                 >
                   {
                     this.state.panes && this.state.panes.map((pane, index) => {
-                    let Component = routerData[index].content;
+                    //let Component = routerData[index].content;
                       return <TabPane tab={pane.name} key={pane.id}  closable={pane.closable}>
-                            <Component />
+                            {this.getComponent(pane.url)}
                         </TabPane>
                     })
                   }

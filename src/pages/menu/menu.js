@@ -17,20 +17,21 @@ class MenuApp extends Component {
                     id: '1',
                     name: '商户管理',
                     children: [
-                        {id: '10', name: '商户总部'},
-                        {id: '11', name: '商户门店'}
+                        {id: '10', name: '商户总部', url: '/components/option1'},
+                        {id: '11', name: '商户门店', url: '/components/option2'}
                     ]
                 },
                 {
                     id: '2',
                     name: '代理商管理',
                     children: [
-                        {id: '20', name: '代理商管理'}
+                        {id: '20', name: '代理商管理', url: '/components/option3'}
                     ]
                 },
                 {
                     id: '4',
                     name: '帮助中心',
+                    url: '/components/help',
                     children: []
                 }
             ]
