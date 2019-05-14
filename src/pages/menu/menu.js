@@ -17,8 +17,7 @@ class MenuApp extends Component {
                     id: '1',
                     name: '商户管理',
                     children: [
-                        {id: '10', name: '商户总部', url: '/components/option1'},
-                        {id: '11', name: '商户门店', url: '/components/option2'}
+                        {id: '10', name: '商户总部', url: '/components/option1'}
                     ]
                 },
                 {

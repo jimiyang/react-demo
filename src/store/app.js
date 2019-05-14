@@ -1,5 +1,4 @@
 
-import {createStore} from 'redux';
 import { connect } from 'react-redux'
 import Counter from '../pages/components/option2'
 import actions from '../store/action/action';

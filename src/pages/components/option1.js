@@ -49,7 +49,7 @@ class Options1 extends Component {
                     <div>
                         <p>用户名: <Input  onChange={this.changeEvent.bind(this, 'name')} value={this.state.name}/></p>
                         <p>用户名: <Input  onChange={this.changeEvent.bind(this, 'pwd')} value={this.state.pwd}/></p>
-                        <Button type="primary" onClick={this.btnEvent.bind(this)}>确定</Button>
+                        <Button type="primary" onClick={this.btnEvent.bind(this)}>确定确定确定</Button>
                     </div>
                 </div>
             </Provider>

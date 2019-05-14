@@ -1,19 +1,16 @@
 import {Component} from 'react';
 import {Layout, Tabs} from 'antd';
+import router from 'umi/router';
 import Menu from  '../pages/menu/menu';
 import Help from  '../pages/components/help';
 import Option1 from  '../pages/components/option1';
 import Option2 from  '../pages/components/option2';
 import Option3 from  '../pages/components/option3';
+import List from  '../pages/components/list';
 var createHistory = require('history').createBrowserHistory
 const history = createHistory() 
 const {Header, Sider, Content} = Layout;
 const TabPane = Tabs.TabPane
-const routerData = [
-    {url:"/components/option1", content: Option1},
-    {url:"/components/option3", content: Option3},
-    {url:"/components/help", content: Help}
-]
 class BasicLayout extends Component {
   constructor(props) {
     super(props);
@@ -24,7 +21,8 @@ class BasicLayout extends Component {
       activeKey: panes.length === 0 ? '1':panes[0].id,
       panes,
       selectedKey,
-      hideAdd: true
+      hideAdd: true,
+      type: ''
     }
   }
   getComponent(url) {
@@ -32,9 +30,6 @@ class BasicLayout extends Component {
     switch(url) {
       case '/components/option1':
         Component = Option1
-      break;
-      case '/components/option2':
-        Component = Option2
       break;
       case '/components/option3':
         Component = Option3
@@ -59,8 +54,10 @@ class BasicLayout extends Component {
         panes.push(pane)
     }
     let selectedKey=activeKey
-    this.setState({ panes, activeKey,selectedKey})
-  }
+    this.setState({ panes, activeKey,selectedKey, type: ''})
+    window.localStorage.setItem("panes", JSON.stringify(panes));
+    router.push(pane.url);
+  } 
   onEdit = (targetKey, action) => {
     this[action](targetKey)
   }
@@ -79,18 +76,20 @@ class BasicLayout extends Component {
     }
     this.setState({panes, activeKey})
   }
-  onChange = (activeKey) => {
+  onChange = (type, activeKey) => {
     const panes = this.state.panes
-    let router
+    let url
     panes.map((item,i)=>{
       if(activeKey === item.id){
-        router = item.url
+        url = item.url
         return false
       }
     })
-    history.push(router)
+    this.setState({type});
+    history.push(url)
     let selectedKey=activeKey
     this.setState({selectedKey ,activeKey});
+    router.push(url);
   }
   render() {
     return (
@@ -103,18 +102,17 @@ class BasicLayout extends Component {
           <Content style={{margin: '24px 16px 0'}}>
             <div style={{padding: 24, background: '#fff', minHeight: 360}}>
                 <Tabs
-                    onChange={this.onChange.bind(this)}
-                    activeKey={this.state.activeKey}
-                    type="editable-card"
-                    onEdit={this.onEdit}
-                    hideAdd={this.state.hideAdd}
+                  onChange={this.onChange.bind(this, 'menu')}
+                  activeKey={this.state.activeKey}
+                  type="editable-card"
+                  onEdit={this.onEdit}
+                  hideAdd={this.state.hideAdd}
                 >
                   {
                     this.state.panes && this.state.panes.map((pane, index) => {
-                    //let Component = routerData[index].content;
                       return <TabPane tab={pane.name} key={pane.id}  closable={pane.closable}>
-                            {this.getComponent(pane.url)}
-                        </TabPane>
+                        {this.state.type === 'menu' ? this.getComponent(pane.url) : this.props.children}
+                      </TabPane>
                     })
                   }
                 </Tabs>
