@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {Input, Button} from 'antd';
-import {Provider} from 'react-redux';
+import {Provider, connect} from 'react-redux';
 import {createStore} from 'redux';
 import reducer from '../../store/reduces/index.js';
-import App from '../../store/app';
+import actions from '../../store/action/action.js';
 const store = createStore(reducer);
 class Options1 extends Component {
     constructor(props) {
@@ -20,7 +20,6 @@ class Options1 extends Component {
         };
     }
     componentWillMount() {
-        //store.subscribe((state) => this.setState(state));
 		const arr=['react', 'vue', 'anglar'];
 		//console.log(arr.includes('3333'));
     }
@@ -39,10 +38,12 @@ class Options1 extends Component {
       console.log(`用户名：${this.state.name}，密码：${this.state.pwd}`);
     }
     render() {
+        const {increment, decrement, count} = this.props;
         return (
             <Provider store={store}>
-                <App />
                 <div>
+                    Clicked: {count} times
+                    <Button type="primary" onClick={increment} style={{marginLeft: '20px'}}>+</Button>
                     <div style={{marginBottom: '20px'}}>当前值为：{this.state.text}</div>
                     <Input onChange={this.change} value={this.state.text}/>
                     <Button onClick={this.commitClick.bind(this)} style={{marginTop: '20px'}}>确定</Button>
@@ -56,4 +57,15 @@ class Options1 extends Component {
         )
     }
 }
+const mapStateToProps = (state) => {
+    return {
+        count: state.todos.count
+    }
+};
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        increment: (...args) => dispatch(actions.increment(...args))
+    }
+};
+Options1 = connect(mapStateToProps, mapDispatchToProps)(Options1);
 export default Options1;

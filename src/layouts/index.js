@@ -1,12 +1,15 @@
 import {Component} from 'react';
 import {Layout, Tabs} from 'antd';
+import {Provider, connect} from 'react-redux';
+import {createStore} from 'redux';
 import router from 'umi/router';
-import Menu from  '../pages/menu/menu';
+import Menu from  '../pages/menu/menu'; //菜单页
+import Main from '../pages/main/main'; //内容页
 import Help from  '../pages/components/help';
 import Option1 from  '../pages/components/option1';
-import Option2 from  '../pages/components/option2';
 import Option3 from  '../pages/components/option3';
-import List from  '../pages/components/list';
+import reducer from '../store/reduces/index.js';
+const store = createStore(reducer);
 var createHistory = require('history').createBrowserHistory
 const history = createHistory() 
 const {Header, Sider, Content} = Layout;
@@ -54,7 +57,7 @@ class BasicLayout extends Component {
         panes.push(pane)
     }
     let selectedKey=activeKey
-    this.setState({ panes, activeKey,selectedKey, type: ''})
+    this.setState({ panes, activeKey,selectedKey,type: store.getState().todos.routerType})
     window.localStorage.setItem("panes", JSON.stringify(panes));
     router.push(pane.url);
   } 
@@ -76,7 +79,7 @@ class BasicLayout extends Component {
     }
     this.setState({panes, activeKey})
   }
-  onChange = (type, activeKey) => {
+  changeTab = (activeKey) => {
     const panes = this.state.panes
     let url
     panes.map((item,i)=>{
@@ -85,24 +88,24 @@ class BasicLayout extends Component {
         return false
       }
     })
-    this.setState({type});
     history.push(url)
     let selectedKey=activeKey
-    this.setState({selectedKey ,activeKey});
+    this.setState({selectedKey ,activeKey, type: 'menu'});
     router.push(url);
   }
   render() {
     return (
-      <Layout>
-        <Sider width={220} style={{minHeight: '100vh', color: 'white'}}>
-            <Menu handleClick = {this.handleClick}/>
-        </Sider>
+      <Provider store={store}>
         <Layout>
-          <Header style={{background: '#fff', textAlign: 'center', padding: 0}}>Header</Header>
-          <Content style={{margin: '24px 16px 0'}}>
-            <div style={{padding: 24, background: '#fff', minHeight: 360}}>
+          <Sider width={220} style={{minHeight: '100vh', color: 'white'}}>
+              <Menu handleClick = {this.handleClick}/>
+          </Sider>
+          <Layout>
+            <Header style={{background: '#fff', textAlign: 'center', padding: 0}}>Header</Header>
+            <Content style={{margin: '24px 16px 0'}}>
+              <div style={{padding: 24, background: '#fff', minHeight: 360}}>
                 <Tabs
-                  onChange={this.onChange.bind(this, 'menu')}
+                  onChange={this.changeTab.bind(this)}
                   activeKey={this.state.activeKey}
                   type="editable-card"
                   onEdit={this.onEdit}
@@ -112,14 +115,15 @@ class BasicLayout extends Component {
                     this.state.panes && this.state.panes.map((pane, index) => {
                       return <TabPane tab={pane.name} key={pane.id}  closable={pane.closable}>
                         {this.state.type === 'menu' ? this.getComponent(pane.url) : this.props.children}
-                      </TabPane>
+                    </TabPane>
                     })
                   }
                 </Tabs>
-            </div>
-          </Content>
+              </div>
+            </Content>
+          </Layout>
         </Layout>
-      </Layout>
+      </Provider>
     )
   }
 }

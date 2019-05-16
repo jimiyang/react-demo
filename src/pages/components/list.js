@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-
 class List extends Component {
     constructor(props) {
         super(props);
@@ -18,10 +17,10 @@ class List extends Component {
       })
     }
     render() {
-      return (
+      return ( 
         <div>
-           <ul><li>跳转成功{this.state.value}</li></ul>
-        </div>  
+          <ul><li>跳转成功{this.state.value}</li></ul>
+        </div>
       )
     }
 };
